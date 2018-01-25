@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +26,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class Main {
 
 	// Class to hold individual offer
-	static class Offer {
+	static class Offer implements Comparable<Offer>{
 		public String MainOffer;
 		public String Merchant;
 		public Date ExpiryDate;
@@ -74,6 +75,11 @@ public class Main {
 				}
 			}
 
+		}
+
+		@Override
+		public int compareTo(Offer o) {
+			return this.Merchant.compareTo(o.Merchant);
 		}
 	}
 
@@ -230,6 +236,7 @@ public class Main {
 
 		// build each offer
 		dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		Collections.sort(offersList);
 		for (Offer o : offersList) {
 			builder.append('"' + o.MainOffer + "\",\"" + o.Merchant + "\"," + dateFormat.format(o.ExpiryDate));
 			String TempStr = offersRelation.get(o);

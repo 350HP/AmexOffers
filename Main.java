@@ -24,46 +24,47 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class Main {
 
-	//Class to hold individual offer
+	// Class to hold individual offer
 	static class Offer {
 		public String MainOffer;
 		public String Merchant;
 		public Date ExpiryDate;
 
-		//If the Offer Text and the Merchant is the same, we consider them to be the same
+		// If the Offer Text and the Merchant is the same, we consider them to be the
+		// same
 		@Override
 		public boolean equals(Object o) {
 			Offer cmp = (Offer) o;
 			if (this.MainOffer.equals(cmp.MainOffer) && this.Merchant.equals(cmp.Merchant)) {
 				return true;
-			}
-			else return false;
+			} else
+				return false;
 		}
-		
+
 		@Override
 		public int hashCode() {
 			return Objects.hash(MainOffer, Merchant);
 		}
-		
-		//Constructor to build out the offer
+
+		// Constructor to build out the offer
 		public Offer(String MainOffer, String Merchant, String DateStr) {
 			this.MainOffer = MainOffer;
 			this.Merchant = Merchant;
 
 			String Temp = DateStr.replaceAll("[^0-9/]", "");
-			
+
 			if (Temp.isEmpty()) {
-				//for today
-				this.ExpiryDate = new Date(); 
+				// for today
+				this.ExpiryDate = new Date();
 			} else if (Temp.matches("^\\d+$")) {
-				//for expires in X days
+				// for expires in X days
 				Date dt = new Date();
 				Calendar c = Calendar.getInstance();
 				c.setTime(dt);
 				c.add(Calendar.DATE, Integer.parseInt(Temp));
 				this.ExpiryDate = c.getTime();
 			} else {
-				//for expiry date
+				// for expiry date
 				DateFormat df = new SimpleDateFormat("M/d/y");
 				try {
 					Date parseresult = df.parse(Temp);
@@ -72,12 +73,12 @@ public class Main {
 					this.ExpiryDate = new Date();
 				}
 			}
-			
+
 		}
 	}
 
 	public static void main(String[] args) throws IOException {
-		//Open a CSV file to output information
+		// Open a CSV file to output information
 		DateFormat dateFormat = new SimpleDateFormat("MMM-dd hh-mm-a");
 		PrintWriter printWriter = null;
 		try {
@@ -86,39 +87,43 @@ public class Main {
 			e.printStackTrace();
 		}
 
-		
-		//Extract the required Chrome Driver and set it up
+		// Extract the required Chrome Driver and set it up
 		String OS = System.getProperty("os.name");
 		String chromeDriverFileName;
-		
-		if(OS.contains("Windows")) 
-			chromeDriverFileName="chromedriver.exe";
-		else if(OS.contains("Mac OS"))
-			chromeDriverFileName="chromedriver.mac";
-		else 
-			chromeDriverFileName="chromedriver.linux";
-		
-		InputStream res = Main.class.getResourceAsStream("/"+chromeDriverFileName);
-		System.out.print("hre\n\n\n");
+
+		if (OS.contains("Windows"))
+			chromeDriverFileName = "chromedriver.exe";
+		else if (OS.contains("Mac OS"))
+			chromeDriverFileName = "chromedriver.mac";
+		else
+			chromeDriverFileName = "chromedriver.linux";
+
+		InputStream res = Main.class.getResourceAsStream("/" + chromeDriverFileName);
 		FileOutputStream output = new FileOutputStream(chromeDriverFileName);
-		byte [] buffer = new byte[4096];
+		byte[] buffer = new byte[4096];
 		int bytesRead = res.read(buffer);
 		while (bytesRead != -1) {
-		    output.write(buffer, 0, bytesRead);
-		    bytesRead = res.read(buffer);
+			output.write(buffer, 0, bytesRead);
+			bytesRead = res.read(buffer);
 		}
 		output.close();
 		res.close();
-		
-		System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "\\" + chromeDriverFileName);
+
+		if (OS.contains("Windows"))
+			System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "\\" + chromeDriverFileName);
+		else {
+			File f = new File(chromeDriverFileName);
+			f.setExecutable(true, true);
+			System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "/" + chromeDriverFileName);
+		}
+
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--start-maximized");
 
 		WebDriver driver = new ChromeDriver(options);
 		WebDriverWait wait = new WebDriverWait(driver, 20);
-		
-		
-		//Start Processing Offers
+
+		// Start Processing Offers
 		StringBuilder builder = new StringBuilder();
 		driver.get("https://global.americanexpress.com/accounts");
 		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Add Another Card']")));
@@ -214,16 +219,16 @@ public class Main {
 		driver.quit();
 		File file = new File(chromeDriverFileName);
 		file.delete();
-		
-		//start building the output file
-		//header
+
+		// start building the output file
+		// header
 		builder.append("Offer,Merchant,Date");
 		for (String s : cardsList) {
 			builder.append("," + s);
 		}
 		builder.append("\n");
-		
-		//build each offer
+
+		// build each offer
 		dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 		for (Offer o : offersList) {
 			builder.append('"' + o.MainOffer + "\",\"" + o.Merchant + "\"," + dateFormat.format(o.ExpiryDate));

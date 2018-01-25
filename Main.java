@@ -344,6 +344,7 @@ public class Main {
 		}
 		
 		Thread.sleep(2000);
+		System.exit(0);
 		return;
 	}
 

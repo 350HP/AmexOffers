@@ -10,7 +10,7 @@ NA       = This offer is not available on this card.<br />
 ### Steps to use:
 1. Install <a href="https://www.google.com/chrome/">Chrome</a> and <a href="https://java.com/en/download/">Java</a> on your machine
 2. Download the JAR file from <a href="https://github.com/350HP/AmexOffers/raw/master/AmexOffers.jar">here</a> and run it
-3. This will open a new instance of Chrome and prompt you to login to Amex
+3. This will open Chrome and prompt you to login to Amex
 4. Sit back and watch while the program runs through your different cards
 5. Once Chrome closes down, you will find a CSV file with a list of all your offers in the same location as the JAR file
 

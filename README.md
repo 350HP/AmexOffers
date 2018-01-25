@@ -15,4 +15,4 @@ NA       = This offer is not available on this card.<br />
 5. Once Chrome closes down, you will find a CSV file with a list of all your offers in the same location as the JAR file
 
 ### Other notes:
-In case you are worried about what is in the JAR file, clone this repository and run it in Eclipse.
+In case you are worried about what is in the JAR file, use the source code in this repository to build your own JAR file and run it. You will need to add Selenium Libraries and ChromeDriver executiables to your project to get it to work.

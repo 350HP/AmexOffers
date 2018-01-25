@@ -12,7 +12,8 @@ NA       = This offer is not available on this card.<br />
 2. Download the JAR file from <a href="https://github.com/350HP/AmexOffers/raw/master/AmexOffers.jar">here</a> and run it
 3. This will open Chrome and prompt you to login to Amex. Be patient as it might take 10-20 seconds to start
 4. Sit back and watch while the program runs through your different cards
-5. Once Chrome closes down, you will find a CSV file with a list of all your offers in the same location as the JAR file
+5. If you see any popups (for feedback surveys etc) when the script is running, just click cancel and the script should continue running
+6. Once Chrome closes down, you will find a CSV file with a list of all your offers in the same location as the JAR file
 
 ### Other notes:
 In case you are worried about what is in the JAR file, use the source code in this repository to build your own JAR file and run it. You will need to add Selenium Libraries and ChromeDriver executiables to your project to get it to work.

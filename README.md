@@ -16,3 +16,6 @@ NA       = This offer is not available on this card.<br />
 
 ### Other notes:
 In case you are worried about what is in the JAR file, use the source code in this repository to build your own JAR file and run it. You will need to add Selenium Libraries and ChromeDriver executiables to your project to get it to work.
+
+### To-do:
+It would be helpful to add a comparison feature with the previous run's output, in particular highlighting new offers detected since the last time. Use Excel API to do this.
